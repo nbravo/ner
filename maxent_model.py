@@ -4,34 +4,12 @@ import sys
 from sklearn import linear_model
 from collections import defaultdict
 import preprocess
-import gensim
 from sklearn.externals import joblib
 
 tags = {"UNKNOWN": 0, "O": 1, "B": 2, "I": 3}
 reverse_tags = {0: "UNKNOWN", 1: "O", 2: "B", 3: "I"}
 word_dict = None
 numFeatures = None
-
-def translate(predictions):
-  new_predictions = []
-  prev_tag = None
-  for prediction in predictions:
-    if prediction == 0 or prediction == 1:
-      new_predictions.append("TAG")
-    if prediction == 3:
-      if prev_tag == "GENE1" or prev_tag == "GENE2":
-        new_predictions.append(prev_tag)
-      else:
-        new_predictions.append("GENE1")
-        prev_tag = "GENE1"
-    if prediction == 2:
-      if prev_tag == "GENE1":
-        new_predictions.append("GENE2")
-        prev_tag = "GENE2"
-      else:
-        new_predictions.append("GENE1")
-        prev_tag = "GENE1"
-  return new_predictions
 
 if __name__ == "__main__":
   train = sys.argv[1]
